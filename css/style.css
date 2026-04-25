@@ -1,45 +1,129 @@
 :root {
   --primary: #FFD700;
-  --primary-dark: #B8860B;
-  --primary-light: #FFF3CD;
-  --secondary: #1E1E1E;
-  --bg: #0A0A0A;
-  --text: #FFFFFF;
-  --glass: rgba(30, 30, 30, 0.8);
+  --glass: rgba(18,18,18,0.75);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: 'Cairo', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: #0a0a0a;
   overflow: hidden;
   height: 100vh;
-  width: 100vw;
 }
 
-.theme-switch-wrapper { position:fixed; top:20px; right:20px; z-index:1000; }
-.theme-switch { position:relative; display:inline-block; width:60px; height:30px; }
-.theme-switch input { opacity:0; width:0; height:0; }
-.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:var(--secondary); border-radius:30px; transition:0.3s; }
-.slider::before { content:''; position:absolute; height:24px; width:24px; left:3px; bottom:3px; background:var(--primary); border-radius:50%; transition:0.3s; }
-input:checked + .slider { background:var(--primary-light); }
-input:checked + .slider::before { transform:translateX(30px); }
+/* طبقة المشهد 3D */
+#scene-container {
+  position: fixed; top:0; left:0; width:100%; height:100%; z-index:0;
+}
 
+/* طبقة الواجهة */
+#overlay {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  pointer-events: none;  /* السماح بالنقر على الـ canvas */
+}
+
+#overlay > * {
+  pointer-events: auto;
+}
+
+.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 35px var(--primary);
+  margin-bottom: 20px;
+}
+
+.nickname {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: 0 0 30px var(--primary), 0 0 70px var(--primary);
+}
+
+.realname {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #e5c158;
+}
+
+.info-btn {
+  background: linear-gradient(135deg, #FFD700, #B8860B);
+  border: none;
+  color: #0a0a0a;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 12px 35px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 20px 0;
+  box-shadow: 0 0 30px var(--primary);
+  transition: transform 0.3s;
+}
+.info-btn:hover { transform: scale(1.05); }
+
+.control-panel {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+.nav-dot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,215,0,0.2);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.nav-dot.active, .nav-dot:hover {
+  background: var(--primary);
+  color: #0a0a0a;
+}
+
+/* النافذة المنبثقة */
 .modal {
-  display:none;
-  position:fixed;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  background:var(--glass);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,215,0,0.3);
-  border-radius:20px;
-  padding:30px;
-  z-index:1000;
-  max-width:500px;
-  width:90%;
-  text-align:center;
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: var(--glass);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  padding: 30px;
+  z-index: 100;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  color: #fff;
 }
-.modal.active { display:block; animation:fadeIn 0.4s ease; }
-@keyframes fadeIn { from {opacity:0; transform:translate(-50%,-48%);} to {opacity:1; transform:translate(-50%,-50%);} }
+.modal.active { display: block; }
+.skill-tags {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;
+}
+.skill-tags span {
+  background: rgba(255,215,0,0.2);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  padding: 5px 15px;
+  color: var(--primary);
+}
+.close-btn {
+  background: #B8860B; color: #fff; border: none;
+  padding: 10px 25px; border-radius: 30px; cursor: pointer; margin-top: 20px;
+}
